@@ -24,7 +24,7 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.InvalidBrandName);
             }
             _brandDal.Add(brand);
-            return new Result(true, Messages.Added);
+            return new SuccessResult(Messages.Added);
         }
         public IResult Delete(Brand brand)
         {

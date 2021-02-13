@@ -14,7 +14,7 @@ namespace Business.Constants
         public static string NotFound = "Bulunamadı.";
         public static string InvalidDailyPrice = "Araba günlük fiyatı 0'dan büyük olmalıdır.";
         public static string InvalidBrandName = "Araba ismi minimum 2 karakter olmalıdır.";
-        
+        public static string NullDate = "Araba teslim edilmemiştir.";
 
 
     }
