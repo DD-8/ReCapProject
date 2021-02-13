@@ -11,28 +11,29 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            List<Car> cars = new List<Car>
-            {
-                new Car{Id=1,BrandId=1,ColorId=1,DailyPrice=120000,ModelYear=2012,Description="Opel Astra"},
-                new Car{Id=2,BrandId=2,ColorId=2,DailyPrice=260000,ModelYear=2020,Description="Peugeot 2008"},
-                new Car{Id=3,BrandId=3,ColorId=2,DailyPrice=320000,ModelYear=2019,Description="Audi A4"},
-                new Car{Id=4,BrandId=3,ColorId=2,DailyPrice=290000,ModelYear=2015,Description="Audi A6"},
-                new Car{Id=5,BrandId=2,ColorId=3,DailyPrice=230000,ModelYear=2018,Description="Peugeot 3008"}
-            };
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.Add(new Brand { Name = "Mercedes", Model = "C180" });
+            brandManager.Add(new Brand { Name = "BMW", Model = "320" });
+            brandManager.GetAll();
+            brandManager.GetById(1);
 
-            Brand brand = new Brand {Name = "Mercedes" };
-            Color color = new Color {Name = "Kırmızı" };
-
-            Car car = new Car { BrandId=1, ColorId=1, ModelYear=1997, DailyPrice=100000, Description="Doktordan Satılık"};
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            colorManager.Add(new Color { Name = "Beyaz" });
+            colorManager.Add(new Color { Name = "Siyah" });
+            colorManager.Add(new Color { Name = "Kırmızı" });
+            colorManager.GetAll();
+            colorManager.GetById(1);
 
             CarManager carManager = new CarManager(new EfCarDal());
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            carManager.Add(new Car { BrandId = 1, ColorId = 1, DailyPrice = 100000, ModelYear = 1997, Description = "Temiz" });
+            carManager.Add(new Car { BrandId = 2, ColorId = 3, DailyPrice = 156000, ModelYear = 2007, Description = "Çok İyi" });
+            carManager.GetAll();
+            carManager.GetCarDetails();
+            carManager.GetCarsByBrandId(1);
 
-            colorManager.Add(color);
-            brandManager.Add(brand);
-            carManager.Add(car);
-            
+
+
+
         }
     }
 }
