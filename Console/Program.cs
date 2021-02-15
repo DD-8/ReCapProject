@@ -11,34 +11,83 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            brandManager.Add(new Brand { Name = "Mercedes"});
-            brandManager.Add(new Brand { Name = "BMW"});
-            brandManager.GetAll();
-            brandManager.GetById(1);
+            //BrandTest();
+            //ColorTest();
+            //CarTest();
+            //UserTest();
+            //CustomerTest();
+            //RentalTest();
+        }
 
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            colorManager.Add(new Color { Name = "Beyaz" });
-            colorManager.Add(new Color { Name = "Siyah" });
-            colorManager.Add(new Color { Name = "Kırmızı" });
-            colorManager.GetAll();
-            colorManager.GetById(1);
-
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Add(new Car { Name = "Mercedes C180", BrandId = 1, ColorId = 1, DailyPrice = 100000, ModelYear = 1997, Description = "Temiz" });
-            carManager.Add(new Car { Name = "BMW 320", BrandId = 2, ColorId = 3, DailyPrice = 156000, ModelYear = 2007, Description = "Çok İyi" });
-            carManager.GetAll();
-            carManager.GetCarDetails();
-            carManager.GetCarsByBrandId(1);
-
-            UserManager userManager = new UserManager(new EfUserDal());
-            userManager.Add(new User { Email = "deniz.dursun1@outlook.com", FirstName = "Deniz", LastName = "Dursun", Password = "12345" });
-
-            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
-            customerManager.Add(new Customer { UserId = 1, CompanyName = "DD" });
-
+        private static void RentalTest()
+        {
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            rentalManager.Add(new Rental { CarId = 1, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Now });
+            rentalManager.Add(new Rental {CarId = 1, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Now});
+        }
+
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            customerManager.Add(new Customer {UserId = 1, CompanyName = "DD"});
+        }
+
+        private static void UserTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            userManager.Add(new User
+                {Email = "deniz.dursun1@outlook.com", FirstName = "Deniz", LastName = "Dursun", Password = "12345"});
+        }
+
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            carManager.Add(new Car
+            {
+                Name = "Mercedes C180", BrandId = 1, ColorId = 1, DailyPrice = 100000, ModelYear = 1997, Description = "Temiz"
+            });
+            carManager.Add(new Car
+                {Name = "BMW 320", BrandId = 2, ColorId = 3, DailyPrice = 156000, ModelYear = 2007, Description = "Çok İyi"});
+            foreach (var car in carManager.GetAll().Data)
+            {
+                Console.WriteLine(car.Name);
+            }
+
+            foreach (var car in carManager.GetCarsDetail().Data)
+            {
+                Console.WriteLine(car.CarName);
+            }
+
+            foreach (var car in carManager.GetCarsByBrandId(1).Data)
+            {
+                Console.WriteLine(car.Name);
+            }
+        }
+
+        private static void ColorTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            colorManager.Add(new Color {Name = "Beyaz"});
+            colorManager.Add(new Color {Name = "Siyah"});
+            colorManager.Add(new Color {Name = "Kırmızı"});
+            foreach (var color in colorManager.GetAll().Data)
+            {
+                Console.WriteLine(color.Name);
+            }
+
+            Console.WriteLine(colorManager.GetById(1).Data.Name);
+        }
+
+        private static void BrandTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.Add(new Brand {Name = "Mercedes"});
+            brandManager.Add(new Brand {Name = "BMW"});
+            foreach (var brand in brandManager.GetAll().Data)
+            {
+                Console.WriteLine(brand.Name);
+            }
+
+            Console.WriteLine(brandManager.GetById(1).Data.Name);
         }
     }
 }
