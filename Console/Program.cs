@@ -1,9 +1,8 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
-using System.Collections.Generic;
+using Core.Entities.Concrete;
 
 namespace ConsoleUI
 {
@@ -35,31 +34,16 @@ namespace ConsoleUI
         {
             UserManager userManager = new UserManager(new EfUserDal());
             userManager.Add(new User
-                {Email = "deniz.dursun1@outlook.com", FirstName = "Deniz", LastName = "Dursun", Password = "12345"});
+                {Email = "deniz.dursun1@outlook.com", FirstName = "Deniz", LastName = "Dursun"});
         }
 
         private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Add(new Car
-            {
-                Name = "Mercedes C180", BrandId = 1, ColorId = 1, DailyPrice = 100000, ModelYear = 1997, Description = "Temiz"
-            });
-            carManager.Add(new Car
-                {Name = "BMW 320", BrandId = 2, ColorId = 3, DailyPrice = 156000, ModelYear = 2007, Description = "Çok İyi"});
-            foreach (var car in carManager.GetAll().Data)
-            {
-                Console.WriteLine(car.Name);
-            }
 
             foreach (var car in carManager.GetCarsDetail().Data)
             {
-                Console.WriteLine(car.CarName);
-            }
-
-            foreach (var car in carManager.GetCarsByBrandId(1).Data)
-            {
-                Console.WriteLine(car.Name);
+                Console.WriteLine(car.ModelName);
             }
         }
 

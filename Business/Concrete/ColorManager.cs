@@ -3,12 +3,13 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
+    [ValidationAspect(typeof(ColorValidator))]
     public class ColorManager : IColorService
     {
         IColorDal _colorDal;
@@ -25,43 +26,23 @@ namespace Business.Concrete
 
         public IResult Delete(Color color)
         {
-            var colorToDelete = _colorDal.Get(c => c.Id == color.Id);
-            if (colorToDelete == null)
-            {
-                return new ErrorResult(Messages.NotFound);
-            }
-            _colorDal.Delete(colorToDelete);
+            _colorDal.Delete(_colorDal.Get(c => c.Id == color.Id));
             return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Color>> GetAll()
         {
-            var colorToGetAll = _colorDal.GetAll();
-            if (colorToGetAll == null)
-            {
-                return new ErrorDataResult<List<Color>>(Messages.NotFound);
-            }
-            return new SuccessDataResult<List<Color>>(colorToGetAll, Messages.Listed);
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.Listed);
         }
 
         public IDataResult<Color> GetById(int colorId)
         {
-            var colorToGetById = _colorDal.Get(c => c.Id == colorId);
-            if (colorToGetById == null)
-            {
-                return new ErrorDataResult<Color>(Messages.NotFound);
-            }
-            return new SuccessDataResult<Color>(colorToGetById, Messages.Listed);
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.Id == colorId), Messages.Listed);
         }
 
         public IResult Update(Color color)
         {
-            var colorToUpdate = _colorDal.Get(c => c.Id == color.Id);
-            if (colorToUpdate == null)
-            {
-                return new ErrorResult(Messages.NotFound);
-            }
-            _colorDal.Update(colorToUpdate);
+            _colorDal.Update(_colorDal.Get(c => c.Id == color.Id));
             return new SuccessResult(Messages.Updated);
         }
     }

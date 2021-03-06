@@ -3,12 +3,13 @@ using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
+    [ValidationAspect(typeof(RentalValidator))]
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
@@ -20,53 +21,29 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if(rental.ReturnDate == null)
-            {
-                return new ErrorResult(Messages.NullDate);
-            }
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(Rental rental)
         {
-            var rentalToDelete = _rentalDal.Get(c => c.Id == rental.Id);
-            if (rentalToDelete == null)
-            {
-                return new ErrorResult(Messages.NotFound);
-            }
-            _rentalDal.Delete(rentalToDelete);
+            _rentalDal.Delete(_rentalDal.Get(c => c.Id == rental.Id));
             return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            var rentalToGetAll = _rentalDal.GetAll();
-            if (rentalToGetAll == null)
-            {
-                return new ErrorDataResult<List<Rental>>(Messages.NotFound);
-            }
-            return new SuccessDataResult<List<Rental>>(rentalToGetAll, Messages.Listed);
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.Listed);
         }
 
         public IDataResult<Rental> GetById(int rentalId)
         {
-            var rentalToGetById = _rentalDal.Get(c => c.Id == rentalId);
-            if (rentalToGetById == null)
-            {
-                return new ErrorDataResult<Rental>(Messages.NotFound);
-            }
-            return new SuccessDataResult<Rental>(rentalToGetById, Messages.Listed);
+            return new SuccessDataResult<Rental>(_rentalDal.Get(c => c.Id == rentalId), Messages.Listed);
         }
 
         public IResult Update(Rental rental)
         {
-            var rentalToUpdate = _rentalDal.Get(c => c.Id == rental.Id);
-            if (rentalToUpdate == null)
-            {
-                return new ErrorResult(Messages.NotFound);
-            }
-            _rentalDal.Update(rentalToUpdate);
+            _rentalDal.Update(_rentalDal.Get(c => c.Id == rental.Id));
             return new SuccessResult(Messages.Updated);
         }
     }

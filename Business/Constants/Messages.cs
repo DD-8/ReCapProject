@@ -1,7 +1,4 @@
-﻿using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Core.Entities.Concrete;
 
 namespace Business.Constants
 {
@@ -15,7 +12,15 @@ namespace Business.Constants
         public static string InvalidDailyPrice = "Araba günlük fiyatı 0'dan büyük olmalıdır.";
         public static string InvalidBrandName = "Araba ismi minimum 2 karakter olmalıdır.";
         public static string NullDate = "Araba teslim edilmemiştir.";
-
-
+        public static string FailAddedImageLimit = "En fazla 5 fotoğraf yükleyebilirsiniz.";
+        public static string AuthorizationDenied = "Yetkilendirme reddedildi.";
+        public static string UserRegistered = "Kayıt olundu.";
+        public static string UserNotFound = "Kullanıcı bulunamadı.";
+        public static string PasswordError = "Hatalı paralo.";
+        public static string SuccessfulLogin = "Başarılı giriş.";
+        public static string UserAlreadyExists = "Zaten böyle bir kullanıcı var.";
+        public static string AccessTokenCreated = "Token oluşturuldu.";
+        public static string UserAdded = "Kullanıcı eklendi.";
+        public static string CarImageLimitExceeded = "Maksimum fotoğraf limitine ulaşıldı.";
     }
 }
