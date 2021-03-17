@@ -12,7 +12,7 @@ namespace Business.Concrete
     [ValidationAspect(typeof(UserValidator))]
     public class UserManager : IUserService
     {
-        IUserDal _userDal;
+        private readonly IUserDal _userDal;
 
         public UserManager(IUserDal userDal)
         {

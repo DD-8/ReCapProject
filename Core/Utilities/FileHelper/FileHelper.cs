@@ -1,10 +1,7 @@
 ﻿using Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Utilities.FileHelper
 {
@@ -20,7 +17,7 @@ namespace Core.Utilities.FileHelper
                     file.CopyTo(uploading); 
                 }
             }
-            var result = newPath(file);
+            var result = NewPath(file);
             File.Move(sourcePath, result);
             return result;
         }
@@ -39,7 +36,7 @@ namespace Core.Utilities.FileHelper
         }
         public static string Update(string sourcePath, IFormFile file)
         {
-            var result = newPath(file).ToString();
+            var result = NewPath(file).ToString();
             if (sourcePath.Length > 0)
             {
                 using (var stream = new FileStream(result, FileMode.Create))
@@ -50,7 +47,7 @@ namespace Core.Utilities.FileHelper
             File.Delete(sourcePath);
             return result;
         }
-        private static string newPath(IFormFile file)
+        private static string NewPath(IFormFile file)
         {
             FileInfo ff = new FileInfo(file.FileName);
             string fileExtension = ff.Extension;

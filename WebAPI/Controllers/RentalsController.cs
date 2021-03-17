@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class RentalsController : ControllerBase
     {
-        IRentalService _rentalService;
+        private readonly IRentalService _rentalService;
 
         public RentalsController(IRentalService rentalService)
         {
@@ -36,6 +36,18 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result);
+        }
+
+        [HttpGet("get-rentals-detail")]
+        public IActionResult GetRentalsDetail()
+        {
+            var result = _rentalService.GetRentalsDetail();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);    
         }
 
         [HttpPost("add")]

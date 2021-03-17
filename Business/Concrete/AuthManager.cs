@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
@@ -13,8 +10,8 @@ namespace Business.Concrete
 {
      public class AuthManager:IAuthService
     {
-        private IUserService _userService;
-        private ITokenHelper _tokenHelper;
+        private readonly IUserService _userService;
+        private readonly ITokenHelper _tokenHelper;
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
@@ -24,8 +21,7 @@ namespace Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password,out passwordHash,out passwordSalt);
+            HashingHelper.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User
             {
                 Email = userForRegisterDto.Email,
@@ -36,7 +32,7 @@ namespace Business.Concrete
                 Status = true
             };
             _userService.Add(user);
-            return  new SuccessDataResult<User>(user, Messages.UserRegistered);
+            return  new SuccessDataResult<User>(user, Messages.Registered);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -44,7 +40,7 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
             if (userToCheck==null)
             {
-                return new ErrorDataResult<User>(Messages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.NotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.PasswordHash,userToCheck.PasswordSalt))

@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Entities.DTOs
 {

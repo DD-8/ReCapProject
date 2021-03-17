@@ -6,17 +6,24 @@ using Entities.Concrete;
 using System.Collections.Generic;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
     [ValidationAspect(typeof(RentalValidator))]
     public class RentalManager : IRentalService
     {
-        IRentalDal _rentalDal;
+        private readonly IRentalDal _rentalDal;
 
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalsDetail()
+        {
+            _rentalDal.GetRentalsDetail();
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalsDetail(), Messages.Listed);
         }
 
         public IResult Add(Rental rental)

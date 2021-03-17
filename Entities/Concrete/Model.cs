@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Core.Entities;
 
 namespace Entities.Concrete
 {

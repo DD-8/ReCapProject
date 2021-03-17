@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
@@ -11,7 +9,7 @@ namespace Business.Concrete
 {
     public class FuelTypeManager : IFuelTypeService
     {
-        private IFuelTypeDal _fuelTypeDal;
+        private readonly IFuelTypeDal _fuelTypeDal;
 
         public FuelTypeManager(IFuelTypeDal fuelTypeDal)
         {

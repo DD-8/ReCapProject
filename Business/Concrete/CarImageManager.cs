@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Linq;
 using Business.Abstract;
-using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -19,7 +16,7 @@ namespace Business.Concrete
 {
     public class CarImageManager : ICarImageService
     {
-        ICarImageDal _carImageDal;
+        private readonly ICarImageDal _carImageDal;
 
         public CarImageManager(ICarImageDal carImageDal)
         {
@@ -65,7 +62,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<CarImage> Get(int id)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.Id == id));
         }
        
         public IDataResult<List<CarImage>> GetAll()
@@ -89,7 +86,7 @@ namespace Business.Concrete
         private IResult CheckImageLimitExceeded(int carId)
         {
             var carImageCount = _carImageDal.GetAll(p => p.CarId == carId).Count;
-            if (carImageCount >= 5)
+            if (carImageCount >= 10)
             {
                 return new ErrorResult(Messages.CarImageLimitExceeded);
             }
@@ -97,29 +94,22 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IDataResult<List<CarImage>> CheckIfCarImageNull(int id)
+        private IDataResult<List<CarImage>> CheckIfCarImageNull(int carId)
         {
-            try
+            const string path = @"\wwwroot\Images\default.png";
+            var result = _carImageDal.GetAll(c => c.CarId == carId).Any();
+
+            if (!result)
             {
-                string path = @"\wwwroot\Images\default.png";
-                var result = _carImageDal.GetAll(c => c.CarId == id).Any();
-                if (!result)
+                var carImage = new List<CarImage>
                 {
-                    List<CarImage> carImage = new List<CarImage>();
-                    carImage.Add(new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now });
-                    return new SuccessDataResult<List<CarImage>>(carImage);
-                }
-            }
-            catch (Exception exception)
-            {
-
-                return new ErrorDataResult<List<CarImage>>(exception.Message);
+                    new CarImage { CarId = carId, ImagePath = path, Date = DateTime.Now }
+                };
+                return new SuccessDataResult<List<CarImage>>(carImage);
             }
 
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == id).ToList());
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId).ToList());
         }
 
-
-        
     }
 }

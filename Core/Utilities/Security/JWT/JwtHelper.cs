@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using Core.Entities.Concrete;
 using Core.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +14,8 @@ namespace Core.Utilities.Security.JWT
 {
     public class JwtHelper:ITokenHelper
     {
-        public IConfiguration Configuration { get; }
-        private TokenOptions _tokenOptions;
+        private IConfiguration Configuration { get; }
+        private readonly TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
         public JwtHelper(IConfiguration configuration)
         {
@@ -41,7 +40,7 @@ namespace Core.Utilities.Security.JWT
 
         }
 
-        public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user, 
+        private JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user, 
             SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {
             var jwt = new JwtSecurityToken(
