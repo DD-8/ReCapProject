@@ -16,6 +16,7 @@ namespace Entities.DTOs
         public string Description { get; set; }
         public string TransmissionTypeName { get; set; }
         public string BodyTypeName { get; set; }
+        public string ImagePath { get; set; }
 
     }
 }

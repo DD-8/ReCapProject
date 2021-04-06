@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Abstract;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
@@ -6,6 +8,67 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ModelsController : ControllerBase
     {
+        private IModelService _modelService;
 
+        public ModelsController(IModelService modelService)
+        {
+            _modelService = modelService;
+        }
+
+        [HttpGet("get-all")]
+        public IActionResult GetAll()
+        {
+            var result = _modelService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("get-by-id")]
+        public IActionResult GetById(int id)
+        {
+            var result = _modelService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("add")]
+        public IActionResult Add(Model model)
+        {
+            var result = _modelService.Add(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(Model model)
+        {
+            var result = _modelService.Delete(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("update")]
+        public IActionResult Update(Model model)
+        {
+            var result = _modelService.Update(model);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
